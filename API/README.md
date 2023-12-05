@@ -15,6 +15,8 @@ Intel RealSence D455 사용
 reference :
 https://github.com/IntelRealSense/librealsense/tree/master/wrappers/python/examples
 
+fusion**.py -> LIDAR와 camera가 동시에 동작
+
 STT : Whisper 모델 사용
 
 reference :
