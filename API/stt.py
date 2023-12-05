@@ -21,9 +21,19 @@ import sys
 MODEL_TYPE = "medium"
 LANGUAGE = "Korean"
 BLOCKSIZE = int(16000 * 1)
-SILENCE_THRESHOLD = 3600
+SILENCE_THRESHOLD = 2000
 SILENCE_RATIO = 200
 
+def read_and_concatenate_words(file_path):
+    # 파일에서 단어들을 읽음
+    with open(file_path, 'r', encoding='utf-8') as file:
+        words = file.read().split()
+
+    # 모든 단어들을 공백 하나로 이어붙임
+    concatenated_words = ' '.join(words)
+
+    return concatenated_words
+noun_list = read_and_concatenate_words('Noun_list.txt')
 
 global_ndarray = None
 model = whisper.load_model(MODEL_TYPE)
@@ -86,7 +96,7 @@ async def process_audio_buffer():
             
             indata_transformed = local_ndarray.flatten().astype(np.float32) / 32768.0
             
-            result = model.transcribe(indata_transformed, language=LANGUAGE)
+            result = model.transcribe(indata_transformed, language=LANGUAGE, initial_prompt=noun_list)
             print(result["text"])
             
             #return result["text"]  # 결과를 바로 반환합니다.
